@@ -1,7 +1,17 @@
+// import styles from './Dapp.module.scss';
+// const Dapp = () => {
+// 	return (
+// 		<div className={styles.dapp}>
+// 			<h1> Dapp </h1>
+// 		</div>
+// 	)
+// }
+// export default Dapp;
+
 import { useEffect, useState } from 'react';
-import styles from './Home.module.scss';
+import styles from './Dapp.module.scss';
 import { ethers } from 'ethers';
-const Home = () => {
+const Dapp = () => {
   const [balance, setBalance] = useState(0);
   const [currentAccount, setCurrentAccount] = useState('');
   const [chainId, setChainId] = useState(undefined);
@@ -39,9 +49,28 @@ const Home = () => {
       }
 
       const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const { provider: ethereum } = provider;
+
       const _accounts = await provider.send('eth_requestAccounts', []);
+      let _account = _accounts[0];
+
+      // provider.on('accountsChanged', function (accounts) {
+      //   debugger;
+      //   _account = accounts[0];
+      // });
+
+      ethereum.on('accountsChanged', function (accs) {
+        debugger;
+      });
 
       debugger;
+      const signer = provider.getSigner();
+
+      const address = await signer.getAddress();
+
+      console.log(address);
+
+      // debugger;
       if (_accounts.length > 0) {
         setCurrentAccount(_accounts[0]);
       }
@@ -57,7 +86,7 @@ const Home = () => {
   };
 
   return (
-    <div className={styles.Home}>
+    <div className={styles.Dapp}>
       <div>
         <div>MY DAPP</div>
       </div>
@@ -74,4 +103,4 @@ const Home = () => {
     </div>
   );
 };
-export default Home;
+export default Dapp;

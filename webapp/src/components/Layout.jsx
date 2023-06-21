@@ -21,3 +21,14 @@
 // };
 
 // export default Layout;
+
+import styles from './Layout.module.scss';
+const Layout = ({ children }) => {
+  return (
+    <div className={styles.Layout}>
+      <h1> Layout </h1>
+      {children}
+    </div>
+  );
+};
+export default Layout;

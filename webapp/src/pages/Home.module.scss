@@ -1,0 +1,13 @@
+.Home {
+  display: flex;
+  padding: 20px;
+  flex-direction: column;
+  gap: 10px;
+
+  button {
+    padding: 10px;
+    background-color: rebeccapurple;
+    color: white;
+    border: none;
+  }
+}

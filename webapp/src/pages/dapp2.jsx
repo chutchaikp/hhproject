@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import styles from './Home.module.scss';
+import styles from './Dapp2.module.scss';
 import { ethers } from 'ethers';
-const Home = () => {
+const Dapp2 = () => {
   const [balance, setBalance] = useState(0);
   const [currentAccount, setCurrentAccount] = useState('');
   const [chainId, setChainId] = useState(undefined);
@@ -39,9 +39,28 @@ const Home = () => {
       }
 
       const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const { provider: ethereum } = provider;
+
       const _accounts = await provider.send('eth_requestAccounts', []);
+      let _account = _accounts[0];
+
+      // provider.on('accountsChanged', function (accounts) {
+      //   debugger;
+      //   _account = accounts[0];
+      // });
+
+      ethereum.on('accountsChanged', function (accs) {
+        debugger;
+      });
 
       debugger;
+      const signer = provider.getSigner();
+
+      const address = await signer.getAddress();
+
+      console.log(address);
+
+      // debugger;
       if (_accounts.length > 0) {
         setCurrentAccount(_accounts[0]);
       }
@@ -56,8 +75,43 @@ const Home = () => {
     setCurrentAccount(undefined);
   };
 
+  const onConnect = async () => {
+    try {
+      debugger;
+      if (!window.ethereum) {
+        console.log('Please install MetaMask');
+        return;
+      }
+
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const { provider: ethereum } = provider;
+
+      const _accounts = await provider.send('eth_requestAccounts', []);
+      let _account = _accounts[0];
+
+      ethereum.on('accountsChanged', function (accs) {
+        debugger;
+      });
+
+      debugger;
+      const signer = provider.getSigner();
+      const address = await signer.getAddress();
+
+      // const _balance = await provider.getBalance(currentAccount);
+      const _balance = await provider.getBalance(address);
+      const _ETHbalance = ethers.utils.formatEther(_balance);
+      setBalance(_ETHbalance);
+
+      const _network = await provider.getNetwork();
+      setChainId(_network.chainId);
+      setChainName(_network.name);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <div className={styles.Home}>
+    <div className={styles.Dapp}>
       <div>
         <div>MY DAPP</div>
       </div>
@@ -71,7 +125,11 @@ const Home = () => {
           <button onClick={onClickConnect}>Connect MetaMask</button>
         )}
       </div>
+
+      <div className="buttons">
+        <button onClick={onConnect}>CONNECT</button>
+      </div>
     </div>
   );
 };
-export default Home;
+export default Dapp2;
