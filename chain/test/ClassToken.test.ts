@@ -1,5 +1,5 @@
 import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
-import { expect } from "chai";
+import { assert, expect } from "chai";
 import { ethers } from "hardhat";
 
 const ONE_GWEI = 1000000000;
@@ -33,5 +33,17 @@ describe('ClassToken', function () {
 	it('Should have the correct inittial supply', async function () {
 		const { classToken: token, } = await loadFixture(deployFixture)
 		expect(await token.totalSupply()).to.equal(initialSupply);
+	})
+
+	it('Hello ERC20', async function () {
+		const { classToken: token, } = await loadFixture(deployFixture)
+		const supply = await token.totalSupply();
+
+		console.log('totalSupply: ', supply);
+		console.log('initialSupply: ', initialSupply)
+
+		// 10000000000000000000000n
+		assert.equal(await token.totalSupply(), initialSupply);
+		// expect(await token.totalSupply()).to.equal(initialSupply);
 	})
 })
